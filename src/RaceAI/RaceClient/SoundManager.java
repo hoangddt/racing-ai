@@ -20,14 +20,14 @@ import javax.sound.sampled.UnsupportedAudioFileException;
  * the static variable SoundEffect.volume to mute the sound.
  */
 public enum SoundManager {
-	MNEN("src\\_SOUNDS\\bg.wav"),
-	MONE("src\\_SOUNDS\\one.wav"),
-	MTWO("src\\_SOUNDS\\two.wav"),
-	MTHREE("src\\_SOUNDS\\three.wav"),
-	MSTART("src\\_SOUNDS\\motor_start.wav"),
-	MSTOP("src\\_SOUNDS\\motor_stop.wav"),
-	MGOING("src\\_SOUNDS\\motor_1_armored.wav"),
-	MCLICK("src\\_SOUNDS\\click.wav");
+	MNEN("src/_SOUNDS/bg.wav"),
+	MONE("src/_SOUNDS/one.wav"),
+	MTWO("src/_SOUNDS/two.wav"),
+	MTHREE("src/_SOUNDS/three.wav"),
+	MSTART("src/_SOUNDS/motor_start.wav"),
+	MSTOP("src/_SOUNDS/motor_stop.wav"),
+	MGOING("src/_SOUNDS/motor_1_armored.wav"),
+	MCLICK("src/_SOUNDS/click.wav");
 	
 
 	// Nested class for specifying volume
@@ -54,12 +54,15 @@ public enum SoundManager {
 			// Open audio clip and load samples from the audio input stream.
 			clip.open(audioInputStream);
 		} catch (UnsupportedAudioFileException e) {
-			e.printStackTrace();
+			// e.printStackTrace();
 		} catch (IOException e) {
-			e.printStackTrace();
+			// e.printStackTrace();
 		} catch (LineUnavailableException e) {
-			e.printStackTrace();
+			// e.printStackTrace();
+		} catch (Exception e) {
+
 		}
+
 	}
 
 	// Play or Re-play the sound effect from the beginning, by rewinding.
@@ -81,6 +84,11 @@ public enum SoundManager {
 	}
 	// Optional static method to pre-load all the sound files.
 	static void init() {
-		values(); // calls the constructor for all the elements
+		try {
+			values(); // calls the constructor for all the elements
+		} catch (Exception e)
+		{
+			
+		}
 	}
 }

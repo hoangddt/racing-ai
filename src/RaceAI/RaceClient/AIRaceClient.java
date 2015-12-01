@@ -77,7 +77,7 @@ public class AIRaceClient extends JFrame implements Runnable, KeyListener,
 
 		RwC = new RaceWithMultCar_Client(str, this.getWidth(), this.getHeight());
 		for (int i = 0; i < RwC.cars.size(); i++) {
-			RwC.cars.get(i).SetImage("src\\_IMAGE\\carr" + (i % 5));
+			RwC.cars.get(i).SetImage("src/_IMAGE/carr" + (i % 5));
 		}
 		this.addKeyListener(this);
 		addMouseListener(this);
