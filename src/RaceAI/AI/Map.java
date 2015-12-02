@@ -1,5 +1,8 @@
 package RaceAI.AI;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.awt.Point;
 import RaceAI.AI.Node;
 
 public class Map
@@ -9,6 +12,8 @@ public class Map
     public Node startNode;
     public Node endNode;
 
+    // ToDo: Apply singleton design pattern
+    
     public Map(int x, int y)
     {
         this.width = x;
@@ -29,6 +34,18 @@ public class Map
         }
         this.startNode = this.getNodeAt(1, 1);
         this.endNode = this.getNodeAt(this.width - 1, this.height - 1);
+    }
+
+    public void updateMapByArray(char [][]arr)
+    {
+        // This method is just for test
+        for (int i = 0; i < this.width; i++)
+        {
+            for (int j = 0; j < this.height; j++)
+            {
+                this.nodes[i][j].setValue(arr[j][i]);
+            }
+        }
     }
 
     public void setValueAt(int x, int y, char val)
@@ -66,42 +83,53 @@ public class Map
                 return true;
         }
     }
-    public Stack<Node> getNeighbors(Node node)
+
+    public ArrayList<Node> getNeighbors(Node node)
     {
-        Stack<node> neightbors = new Stack<Node>();
+        ArrayList<Node> neightbors = new ArrayList<Node>();
         int x = node.x,
             y = node.y;
 
         // check up
         if (this.isWalkableAt(x, y - 1))
         {
-            neightbors.push(this.nodes[y-1][x]);
+            neightbors.add(this.nodes[y-1][x]);
         }
 
         // check right
         if (this.isWalkableAt(x + 1, y))
         {
-            neightbors.push(this.nodes[y][x + 1]);
+            neightbors.add(this.nodes[y][x + 1]);
         }
 
         // check down
         if (this.isWalkableAt(x, y + 1))
         {
-            neightbors.push(this.nodes[y + 1][x]);
+            neightbors.add(this.nodes[y + 1][x]);
         }
 
         // check left
         if (this.isWalkableAt(x - 1, y))
         {
-            neightbors.push(this.nodes[y-1][x]);
+            neightbors.add(this.nodes[y][x - 1]);
         }
+
         return neightbors;
     }
 
-    public Point[] backTrack(Node node)
+    public ArrayList<Point> backTrace(Node node)
     {
-        // ToDO: implement this to find parent
-        // and store in an array of pair x, y
-        return;
+        ArrayList<Point> path = new ArrayList<Point>();
+        path.add(new Point(node.x, node.y));
+
+        while (node.parent)
+        {
+            node = node.parent;
+            path.add(new Point(node.x, node.y));
+        }
+
+        // Reverse and Array: http://ideone.com/ELtOEe
+        Collections.reverse(path);
+        return path;
     }
 }

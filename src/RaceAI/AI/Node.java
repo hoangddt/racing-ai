@@ -3,7 +3,7 @@ package RaceAI.AI;
 public class Node
 {
     public boolean opened,
-                    closed;
+                   closed;
     public int x, y, f, g, h;
     public char value;
     public Node parent;
@@ -12,12 +12,15 @@ public class Node
     {
         this(0, 0);
     }
+
     public Node(int x, int y)
     {
         this.x = x;
         this.y = y;
         this.f = this.g = this.h = 0;
-        value = '?';
+        this.value = '?';
+        this.opened = this.closed = false;
+        this.parent = null;
     }
 
     public setCoordinate(int x, int y)
