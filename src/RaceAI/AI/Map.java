@@ -16,20 +16,22 @@ public class Map
     
     public Map(int x, int y)
     {
+        // width and height is in map perpective
+        // not in array perpective
         this.width = x;
         this.height = y;
-        this.nodes = new Node[this.width][this.height];
+        this.nodes = new Node[this.height][this.width];
         this.init();
     }
 
     public void init()
     {
         // update x, y and value for each node
-        for (int i = 0; i < this.width; i++)
+        for (int i = 0; i < this.height; i++)
         {
-            for (int j = 0; j < this.height; j++)
+            for (int j = 0; j < this.width; j++)
             {
-                this.nodes[i][j].setCoordinate(j, i);
+                this.nodes[i][j] = new Node(j, i);
             }
         }
         this.startNode = this.getNodeAt(1, 1);
@@ -60,14 +62,14 @@ public class Map
 
     public boolean isStartNode(Node node)
     {
-        if (this.startNode.x == node.x && this.startNode.y = node.y)
+        if ( (this.startNode.x == node.x) && (this.startNode.y == node.y) )
             return true;
         else return false;
     }
 
     public boolean isEndNode(Node node)
     {
-        if (this.endNode.x == node.x && this.endNode.y = node.y)
+        if ( (this.endNode.x == node.x) && (this.endNode.y == node.y) )
             return true;
         else return false;
     }
@@ -122,7 +124,7 @@ public class Map
         ArrayList<Point> path = new ArrayList<Point>();
         path.add(new Point(node.x, node.y));
 
-        while (node.parent)
+        while (node.parent != null)
         {
             node = node.parent;
             path.add(new Point(node.x, node.y));

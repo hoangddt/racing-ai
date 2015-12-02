@@ -12,7 +12,7 @@ class Heap
         _nodes = new ArrayList<Node>();
     }
 
-    public ArrayList<Node> push(Node item)
+    public Node push(Node item)
     {
         return this._heappush(this._nodes, item);
     }
@@ -20,21 +20,39 @@ class Heap
     // pop the Node have smallest f property
     public Node pop()
     {
-        return this._heappop(this._nodes, item);
+        return this._heappop(this._nodes);
     }
 
-    public Node updateItem(Node node)
+    public boolean empty()
     {
-
+        return this._nodes.size() == 0;
     }
 
-    public ArrayList<Node> _heappush(ArrayList<Node> array, Node item)
+    public Node updateItem(Node item)
+    {
+        return this._updateItem(this._nodes, item);
+    }
+
+    public Node _updateItem(ArrayList<Node> array, Node item)
+    {
+        int pos;
+        // first index found
+        pos = array.indexOf(item);
+        if (pos == -1)
+        {
+            return null;
+        }
+        _siftdown(array, 0, pos);
+        return _siftup(array, pos);
+    }
+
+    public Node _heappush(ArrayList<Node> array, Node item)
     {
         array.add(item);
         return _siftdown(array, 0, array.size() - 1);
     }
 
-    public ArrayList<Node> _heappop(ArrayList<Node> array, Node item)
+    public Node _heappop(ArrayList<Node> array)
     {
         Node lastelt, returnitem;
         lastelt = this._popLastNode(array);
@@ -52,8 +70,9 @@ class Heap
         return returnitem;
     }
 
-    private int _defaultCompare(Node nodeA, Node nodeB)
+    private double _defaultCompare(Node nodeA, Node nodeB)
     {
+        // ToDo: consider may be cast to int
         return nodeA.f - nodeB.f;
     }
 
@@ -64,12 +83,12 @@ class Heap
         // http://ideone.com/V9RIdR
         int lastPos = array.size() - 1;
         // ToDo: Handle if array is empty, lastPos < 0
-        Node lastItem = array.get(pos);
-        array.remove(pos);
+        Node lastItem = array.get(lastPos);
+        array.remove(lastPos);
         return lastItem;
     }
 
-    private ArrayList<Node> _siftdown(ArrayList<Node> array, int startpos, int pos)
+    private Node _siftdown(ArrayList<Node> array, int startpos, int pos)
     {
         Node newItem, 
              parent;
@@ -91,7 +110,7 @@ class Heap
         return array.get(pos);
     }
 
-    private ArrayList<Node> _siftup(ArrayList<Node> array, int pos)
+    private Node _siftup(ArrayList<Node> array, int pos)
     {
         int childPos,
             endPos,
@@ -105,7 +124,9 @@ class Heap
         while (childPos < endPos)
         {
             rightPos = childPos + 1;
-            if (rightPos < endPos && !(this._defaultCompare(array.get(childPos), array.get(rightPos))))
+            // ToDo: compare double to int, be aware wrong condition
+            boolean secondCondition = this._defaultCompare(array.get(childPos), array.get(rightPos)) == 0;
+            if ((rightPos < endPos) && secondCondition)
             {
                 childPos = rightPos;
             }
@@ -114,6 +135,6 @@ class Heap
             childPos = 2 * pos + 1;
         }
         array.set(pos, newItem);
-        return this._siftdown(array, startpos, pos);
+        return this._siftdown(array, startPos, pos);
     }
 }

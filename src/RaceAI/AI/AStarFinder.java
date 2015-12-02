@@ -2,18 +2,20 @@ package RaceAI.AI;
 
 import java.util.ArrayList;  /* use to get neighbors */
 import java.awt.Point;      /* use to store array of path */
-import RaceAI.AI.Node;
 
-class AstarFinder
+import RaceAI.AI.Node;
+import RaceAI.AI.Heap;
+
+public class AStarFinder
 {
     private int _weight;
 
-    public AstarFinder()
+    public AStarFinder()
     {
         this._weight = 1;
     }
 
-    public ArrayList<Point> findPath(int startX, startY, endX, endY, Map map)
+    public ArrayList<Point> findPath(int startX, int startY, int endX, int endY, Map map)
     {
         // ToDo: write Heap class
         Heap openList = new Heap();
@@ -45,9 +47,10 @@ class AstarFinder
 
             // get neigbours of the current node
             ArrayList<Node> neighbors = map.getNeighbors(node);
-            for (i = 0, l = neighbors.size(); i < l; ++i)
+            int l = neighbors.size();
+            for (int i = 0; i < l; ++i)
             {
-                neighbor = neighbors.get(i);
+                Node neighbor = neighbors.get(i);
 
                 if (neighbor.closed)
                 {
@@ -59,14 +62,18 @@ class AstarFinder
 
                 // get the distance between current node and the neighbor
                 // and calculate the next g score
-                int ng = node.g + ((x - node.x == 0 || y - node.y == 0) ? 1 : SQRT2);
+                double ng = node.g + ((x - node.x == 0 || y - node.y == 0) ? 1 : SQRT2);
 
                 // check if the neighbor has not been inspected yet, or
                 // can be reached with smaller cost from the current node
                 if (!neighbor.opened || ng < neighbor.g)
                 {
                     neighbor.g = ng;
-                    neighbor.h = neighbor.h || this._weight * this.manhattan(Math.abs(x - endX), Math.abs(y - endY));
+                    if (neighbor.h < 0)
+                    {
+                        neighbor.h = this._weight * this.manhattan(Math.abs(x - endX), Math.abs(y - endY));
+                    }
+                    
                     neighbor.f = neighbor.g + neighbor.h;
                     neighbor.parent = node;
 

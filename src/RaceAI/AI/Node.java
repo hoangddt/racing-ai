@@ -4,7 +4,12 @@ public class Node
 {
     public boolean opened,
                    closed;
-    public int x, y, f, g, h;
+    public int x, y;
+    /* 
+        distanceFromStart;
+        heuristicDistanceFromGoal;
+    */
+    double f, g, h;
     public char value;
     public Node parent;
 
@@ -17,19 +22,21 @@ public class Node
     {
         this.x = x;
         this.y = y;
-        this.f = this.g = this.h = 0;
+        this.f = this.g = 0;
+        // -1 indicate that value weren't set yet
+        this.h = -1;
         this.value = '?';
         this.opened = this.closed = false;
         this.parent = null;
     }
 
-    public setCoordinate(int x, int y)
+    public void setCoordinate(int x, int y)
     {
         this.x = x;
         this.y = y;
     }
 
-    public setValue(char value)
+    public void setValue(char value)
     {
         this.value = value;
     }
